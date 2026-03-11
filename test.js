@@ -1,3 +1,4 @@
-const {runTests} = require('testsuite2');
+const { createTests } = require('testsuite5');
 const config = require('./config.json');
-runTests(config);
+// Run tests with custom config
+createTests(config);

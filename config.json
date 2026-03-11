@@ -1,19 +1,15 @@
 {
-    "slowMo": 100,
-    "args": [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--window-size=1300,800"
-    ],
-    "defaultViewport": {
-        "width": 1300,
-        "height": 800
+    "puppeteer": {
+      "headless": true,
+      "executablePath": "",
+      "slowMo": 0,
+      "devtools": false,
+      "defaultViewport": { "width": 1400, "height": 1080 },
+      "args": ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
     },
-    "ignoreDefaultArgs": ["--disable-extensions"],
-    "url":"http://127.0.0.1:8080/",
-    "headless": true,
-    "devtools": false,
-    "ignoreHTTPSErrors": true,
-    "dumpio": false
-}
+    "baseUrl": "http://localhost:3000",
+    "port": 3000,
+    "timeout": 3000,
+    "waitUntil": "load"
+  }
+  

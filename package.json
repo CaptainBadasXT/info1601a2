@@ -4,17 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx --yes serve -p 8080",
+    "start": "npx --yes serve -p 3000",
     "test": "npx mocha || exit 0",
-    "update": "npm install --save testsuite2@latest"
+    "update": "npm install --save testsuite5@latest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chai": "^4.2.0",
-    "minimist": ">=1.2.5",
-    "puppeteer": "^19.7.3",
-    "testsuite2": "^2.2.0"
+    "chai": "^4.4.1",
+    "mocha": "^10.4.0",
+    "puppeteer": "^24.36.1",
+    "serve": "^14.2.1",
+    "testsuite5": "^1.1.0"
   }
 }
