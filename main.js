@@ -84,12 +84,14 @@ function displayMyPokemon(mypokemon) {
   let rows = "";
 
   for (let i = 0; i < mypokemon.length; i++) {
+    const releaseId = mypokemon[i].user_pokemon_id ?? mypokemon[i].id;
+
     rows += `
-<tr id="poke-${mypokemon[i].user_pokemon_id}">
+<tr id="poke-${releaseId}">
   <td>${mypokemon[i].name}</td>
   <td>${mypokemon[i].species}</td>
   <td>
-    <button type="button" class="waves-effect waves-light btn" onclick="releasePokemon(${mypokemon[i].user_pokemon_id})">Release</button>
+    <button type="button" class="waves-effect waves-light btn" onclick="releasePokemon(${releaseId})">Release</button>
   </td>
 </tr>`;
   }
@@ -110,8 +112,6 @@ async function releasePokemon(user_pokemon_id) {
     if (row) {
       row.remove();
     }
-
-    getMyPokemon();
   }
   catch (error) {
     console.log(error);
