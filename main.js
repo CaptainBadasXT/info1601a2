@@ -70,20 +70,22 @@ async function getMyPokemon() {
  
 function displayMyPokemon(mypokemon) {
   const tbody = document.getElementById("myPokeListing");
-  let rows = "";
- 
+  tbody.innerHTML = "";
+
   for (let i = 0; i < mypokemon.length; i++) {
-    rows += `
-<tr>
-  <td>${mypokemon[i].name}</td>
-  <td>${mypokemon[i].species}</td>
-  <td>
-    <button class="waves-effect waves-light btn" onclick="releasePokemon(${mypokemon[i].user_pokemon_id})">Release</button>
-  </td>
-</tr>`;
+    tbody.innerHTML += `
+      <tr id="poke-${mypokemon[i].user_pokemon_id}">
+        <td>${mypokemon[i].name}</td>
+        <td>${mypokemon[i].species}</td>
+        <td>
+          <button class="waves-effect waves-light btn"
+            onclick="releasePokemon(${mypokemon[i].user_pokemon_id})">
+            Release
+          </button>
+        </td>
+      </tr>
+    `;
   }
- 
-  tbody.innerHTML = rows;
 }
  
 async function releasePokemon(user_pokemon_id) {
