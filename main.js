@@ -89,10 +89,19 @@ function displayMyPokemon(mypokemon) {
 }
  
 async function releasePokemon(user_pokemon_id) {
-  const user_id = getId();
-  const url = `${server}/mypokemon/${user_id}/${user_pokemon_id}`;
- 
-  await sendRequest(url, "DELETE");
-  getMyPokemon();
-  toast("Pokémon released!");
+  try {
+    const user_id = getId();
+    const url = `${server}/mypokemon/${user_id}/${user_pokemon_id}`;
+
+    await sendRequest(url, "DELETE");
+
+    const row = document.getElementById(`poke-${user_pokemon_id}`);
+    if (row) {
+      row.remove();
+    }
+
+    await getMyPokemon();
+  } catch (error) {
+    console.log(error);
+  }
 }
