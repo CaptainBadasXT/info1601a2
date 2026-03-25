@@ -78,8 +78,9 @@ function displayMyPokemon(mypokemon) {
         <td>${mypokemon[i].name}</td>
         <td>${mypokemon[i].species}</td>
         <td>
-          <button type="button" class="waves-effect waves-light btn"
-            onclick="releasePokemon(${mypokemon[i].user_pokemon_id})">
+          <button type="button"
+                  class="waves-effect waves-light btn"
+                  onclick="releasePokemon(${mypokemon[i].user_pokemon_id})">
             Release
           </button>
         </td>
@@ -101,8 +102,6 @@ async function releasePokemon(user_pokemon_id) {
     if (row) {
       row.remove();
     }
-
-    getMyPokemon();
   } catch (error) {
     console.log(error);
   }
