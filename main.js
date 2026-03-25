@@ -1,45 +1,96 @@
-async function loadListing(){
-    //makes a request to the pokemon listing API url
-
+async function loadListing() {
+  const response = await fetch("https://pokedextr.uwista.dev/pokemon");
+  const pokemon = await response.json();
+  displayListing(pokemon);
 }
-
-function displayListing(pokemon){
-    //receives an array of pokemon objects and displays it on the page in #listing
-
+ 
+function displayListing(pokemon) {
+  const listing = document.getElementById("listing");
+  let html = "";
+ 
+  for (let i = 0; i < pokemon.length; i++) {
+    html += `
+<a href="#${pokemon[i].name}" id="${pokemon[i].name}" onclick="getPokemon(${pokemon[i].id})" class="collection-item">${pokemon[i].name}</a>`;
+  }
+ 
+  listing.innerHTML = html;
 }
-
-async function getPokemon(id){
-   //makes a request to the get pokemon detail API url
-   //gets the data from the request and sends it to displayPokemon()
-
+ 
+async function getPokemon(id) {
+  const response = await fetch(`https://pokedextr.uwista.dev/pokemon/${id}`);
+  const pokemon = await response.json();
+  displayPokemon(pokemon);
 }
-
-function displayPokemon(pokemon){
-    //receives a pokemon object and displays its data on the page in #result
+ 
+function displayPokemon(pokemon) {
+  const result = document.getElementById("result");
+ 
+  result.innerHTML = `
+<div id="pokemon-detail" class="card col m12 l10 offset-l1" style="margin-top: 20px">
+  <div class="card-image">
+    <img class="teal" src="${pokemon.image}" alt="${pokemon.name} Image">
+  </div>
+  <div class="card-content">
+    <span class="card-title"><p>${pokemon.name} #${pokemon.id}</p></span>
+    <p>Type1: ${pokemon.type1}</p>
+    <p>Weight: ${pokemon.weight}</p>
+    <p>Height: ${pokemon.height}</p>
+    <a onclick="catchPokemon(${pokemon.id})" id="catchBtn" style="position:absolute; right:15px; bottom:80px" class="btn-floating btn-large waves-effect waves-light red">
+      <span class="iconify" style="font-size:40px; margin-top:8px" data-icon="mdi-pokeball" data-inline="false"></span>
+    </a>
+  </div>
+</div>`;
 }
-
-// Bonus Functions
-
-async function catchPokemon(pokemon_id){
-    const user_id = getId();//gets the userid from the text field or prompts the user
-    const name = prompt('Please enter a name')//prompts the user to enter a name
-
-    //makes a request to the capture pokemon API url passing the name data in the body
+ 
+async function catchPokemon(pokemon_id) {
+  const user_id = getId();
+  const name = prompt("Please enter a name");
+ 
+  if (!name) {
+    return;
+  }
+ 
+  const url = `${server}/mypokemon/${user_id}`;
+  const data = {
+    pokemon_id: pokemon_id,
+    name: name
+  };
+ 
+  await sendRequest(url, "POST", data);
+  toast(`Successfully captured ${name}!`);
+  getMyPokemon();
 }
-
-async function getMyPokemon(){
-    //makes a request to the get captured pokemon API url
-    //get the data from the request and sends it to displayMyPokemon()
-    const user_id = getId();
-
+ 
+async function getMyPokemon() {
+  const user_id = getId();
+  const url = `${server}/mypokemon/${user_id}`;
+  const mypokemon = await sendRequest(url, "GET");
+  displayMyPokemon(mypokemon);
 }
-
-function displayMyPokemon(mypokemon){
-    //receives an array of mypokemon objects and displays its data on the page in #myPokeListing
+ 
+function displayMyPokemon(mypokemon) {
+  const tbody = document.getElementById("myPokeListing");
+  let rows = "";
+ 
+  for (let i = 0; i < mypokemon.length; i++) {
+    rows += `
+<tr>
+  <td>${mypokemon[i].name}</td>
+  <td>${mypokemon[i].species}</td>
+  <td>
+    <button class="waves-effect waves-light btn" onclick="releasePokemon(${mypokemon[i].user_pokemon_id})">Release</button>
+  </td>
+</tr>`;
+  }
+ 
+  tbody.innerHTML = rows;
 }
-
-async function releasePokemon(user_pokemon_id){
-    const user_id = getId();//gets the userid from the text field or prompts the user
-    //makes a request to the release pokemon API url then call getMyPokemon() to reload the table
-    // toast();  //send a toast message after the request is made
+ 
+async function releasePokemon(user_pokemon_id) {
+  const user_id = getId();
+  const url = `${server}/mypokemon/${user_id}/${user_pokemon_id}`;
+ 
+  await sendRequest(url, "DELETE");
+  getMyPokemon();
+  toast("Pokémon released!");
 }
