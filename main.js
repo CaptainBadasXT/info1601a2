@@ -78,7 +78,7 @@ function displayMyPokemon(mypokemon) {
         <td>${mypokemon[i].name}</td>
         <td>${mypokemon[i].species}</td>
         <td>
-          <button class="waves-effect waves-light btn"
+          <button type="button" class="waves-effect waves-light btn"
             onclick="releasePokemon(${mypokemon[i].user_pokemon_id})">
             Release
           </button>
@@ -87,20 +87,22 @@ function displayMyPokemon(mypokemon) {
     `;
   }
 }
- 
-async function releasePokemon(user_pokemon_id) {
-  try {
-    const user_id = getId();
-    const url = `${server}/mypokemon/${user_id}/${user_pokemon_id}`;
 
-    await sendRequest(url, "DELETE");
+async function releasePokemon(user_pokemon_id) {
+  const user_id = getId();
+  const url = `${server}/mypokemon/${user_id}/${user_pokemon_id}`;
+
+  try {
+    await fetch(url, {
+      method: "DELETE"
+    });
 
     const row = document.getElementById(`poke-${user_pokemon_id}`);
     if (row) {
       row.remove();
     }
 
-    await getMyPokemon();
+    getMyPokemon();
   } catch (error) {
     console.log(error);
   }
